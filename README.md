@@ -50,11 +50,9 @@ David12345david12345Secret:It could be bunnies!
 ### Test Case C: Arbitrary Memory Corruption & Overwrite
 * **Input Monologue:** `ifwardoesntchangemenmustchangeandsomusttheirsymbols`
 * **Observed Output**:
-* 
  ```text
 ifwardoesndddddddddddgeandsomusttheirsymbols
 ```
-
 * **Analysis:** The lack of bounds checking allowed the input string to overwrite adjacent variables. By shortening the input to `ifwardoesnt` and the password string to `changemenm`, the application confirmed memory alignment by printing the password injection cleanly inside of the corrupted username space. This revealed exactly where the variables neighbor each other on the stack. 
 
 ### Test Case D: Stack Smashing & Segmentation Fault
