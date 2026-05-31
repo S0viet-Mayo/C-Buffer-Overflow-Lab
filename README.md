@@ -109,3 +109,12 @@ Ensure that code is compiled with modern defensive flags enabled:
 * **DEP/NX (Data Execution Prevention)**
 * **SSP (Stack Smashing Protector / Compiler Canaries)**
 
+---
+
+## Key Takeaways & Engineering Insights
+
+Executing this vulnerability analysis provided critical insights into low-level systems architecture and software security paradigms:
+
+* **Memory Architecture Awareness:** Reinforced a practical understanding of stack alignment, variable placement, and how contiguous memory blocks interact under the hood when input lengths are left unchecked.
+* **The Fallibility of Default Mitigations:** Demonstrated firsthand that while compiler-level defenses like Stack Canaries are crucial mitigation layers, they are not silver bullets. A robust defense-in-depth strategy requires secure coding practices at the application level rather than relying solely on automated compiler tripwires.
+* **Defensive Mindset Integration:** Validated that identifying a vulnerability is only the first step; analyzing the mechanism of failure is what allows an engineer to design resilient code that inherently respects the principles of the CIA Triad.
