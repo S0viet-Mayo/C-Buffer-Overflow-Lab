@@ -1,0 +1,48 @@
+driver: mjacks11
+
+	a. It returned my username less than 10 characters (mjacks11)
+	
+	b. It returned my username but it cut off the 10th character. (david12345)
+		instead it returned (david1234)
+
+	c. It only returned 9 characters. 
+	(ifwardoesn'tchangemenmustchangeandsomusttheirsymbols) was returned as 
+	(ifwardoes). Yes this is an insanely long monologue BUT it's greater than
+	10 characters 
+	
+
+	For b and c, it only returns 9 characters because '\n' is also considered a character which must be present to 
+	
+	a2. mjacks11 returned normally. 
+
+	b2. David12345 returned David12345david12345Secret:It could be bunnies! 
+	note that david12345 was the input password that is exactly 10 characters.
+	Oh and there's the elephant in the room, or rather bunnies in this case.
+
+	c2. ifwardoesntchangemenmustchangeandsomusttheirsymbols returns ifwardoesndddddddddddgeandsomusttheirsymbols. 
+	It returns the password in the middle of the username, after retesting with a shortened username
+	ifwardoesnt and a password of changemenm we get an ouput of ifwardoesnchangemenmSecret:It could be bunnies!
+
+
+
+	a3.	get_input_unsafe()is a good example of a buffer overflow. It allows the user to write past the buffer,	
+		in our get_input_safe() method we have count < len which prevents the user from writing over the buffer. 
+		This is why when we did our initial test with the safe method, it stopped holding characters at exactly
+		10 characters, one being '\n'. Even with the piece of the ulysses monologue I used, it still only 
+		counted out exactly 9 characters and '\n'. Our unsafe method does not have this check, it has
+		
+		c != '\n'. It only looks for the user to enter a newline (enter key). It's not actively checking to see 
+		if the user is wriring past the buffer limit. The "Where are the Null Terminators" line in fact, 
+		a hint as to what else is happening at the same time. Since neither Username or Password are Null terminated, our loop 
+		c != '\n' continues to search for a '\n'. Since it can't find it, it continues to write, slamming User and Password together, reading past our buffer.  
+
+
+	b3. Buffy violates confidentiality, integrity, and avaliability in a few ways. It gets rid of confidentiality because of the lack of bounds checking
+		and no null termination. This means that the user can see memory they aren't supposed to see, potentially exposing Passwords or other 
+		important server keys (API keys, toekns, etc.) It violates integrity because our unsafe buffy is writing past our buffer, this can lead 
+		our program to write into memory where it shouldn't (which we can see when it returns "Secret". It violates Avaliability because it can lead to seg
+		faults and messing up the memory stack. That's all that's happening here, it's reading into the data directly next to it on the memory stack. 
+	 
+  
+	c3. Secret:It could be bunnies! I got it to crash when typing an INSANE amount of characters. 
+	I got ***stack smashing detected***: terminated Aborted (core dump).  
