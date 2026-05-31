@@ -99,7 +99,7 @@ Ensure that all arrays handling string manipulation reserve the final byte `(buf
 
 ### 3. Compiler Mitigation Defenses: 
 Ensure that code is compiled with modern defensive flags enabled:
-* ###ASLR (Address Space Layout Randomization) 
-* ###DEP/NX (Data Execution Prevention)
-* ###SSP (Stack Smashing Protector / Compiler Canaries)
+** ASLR (Address Space Layout Randomization) 
+** DEP/NX (Data Execution Prevention)
+** SSP (Stack Smashing Protector / Compiler Canaries)
 
