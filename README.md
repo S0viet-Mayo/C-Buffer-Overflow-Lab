@@ -42,7 +42,7 @@ The application was subjected to four input tracking test vectors to map runtime
 ### Test Case B: Boundary Collision & Adjacent Memory leak
 * **Input Username:** `david12345` (Exactly 10 Characters)
 * **Observed Output:**
- ```text David12345david12345Secret:It could be bunnies!```
+ ``` David12345david12345Secret:It could be bunnies!```
 * **Analysis:** Because the input filled the entire buffer without leaving room for a null terminator, string printing routines bled directly into adjacent memory on the stack. This leaked the string payload of the password buffer and exposed an embedded application credential (`Secret:It could be bunnies!`).
 
 ### Test Case C: Arbitrary Memory Corruption & Overwrite
