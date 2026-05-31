@@ -36,26 +36,26 @@ Furthermore, the application admits string NULL Terminators (`\0`). Because the 
 The application was subjected to four input tracking test vectors to map runtime stack behavior. 
 
 ### Test Case A: Standard Normal Input
-* Input Username: `mjacks11` (8 characters)
-* Behavior: The input sits at 8 characters safely within the 10-byte boundary. The application executes normally without leaking memory.
+* **Input Username:** `mjacks11` (8 characters)
+* **Behavior:** The input sits at 8 characters safely within the 10-byte boundary. The application executes normally without leaking memory.
 
 ### Test Case B: Boundary Collision & Adjacent Memory leak
-* Input Username: `david12345` (Exactly 10 Characters)
-* Observed Output:
+* **Input Username:** `david12345` (Exactly 10 Characters)
+* **Observed Output:**
  ```text David12345david12345Secret:It could be bunnies!```
-* Analysis: Because the input filled the entire buffer without leaving room for a null terminator, string printing routines bled directly into adjacent memory on the stack. This leaked the string payload of the password buffer and exposed and embedded application credential (`Secret:It could be bunnies!`).
+* **Analysis:** Because the input filled the entire buffer without leaving room for a null terminator, string printing routines bled directly into adjacent memory on the stack. This leaked the string payload of the password buffer and exposed and embedded application credential (`Secret:It could be bunnies!`).
 
 ### Test Case C: Arbitrary Memory Corruption & Overwrite
-* Input Monologue: `ifwardoesntchangemenmustchangeandsomusttheirsymbols`
-* Observed Output:
+* **Input Monologue:** `ifwardoesntchangemenmustchangeandsomusttheirsymbols`
+* **Observed Output**:
  ```text ifwardoesndddddddddddgeandsomusttheirsymbols```
-* Analysis: The lack of bounds checking allowed the input string to overwrite adjacent variables. By shortening the input to `ifwardoesnt` and the password string to `changemenm`, the application confirmed memory alignment by printing the password injection cleanly inside of the corrupted username space. This revealed exactly where the variables neighbor each other on the stack. 
+* **Analysis:** The lack of bounds checking allowed the input string to overwrite adjacent variables. By shortening the input to `ifwardoesnt` and the password string to `changemenm`, the application confirmed memory alignment by printing the password injection cleanly inside of the corrupted username space. This revealed exactly where the variables neighbor each other on the stack. 
 
 ### Test Case D: Stack Smashing & Segmentation Fault
-* Input: 50 random characters
-* Observed Output:
+* **Input:** 50 random characters
+* **Observed Output:**
  ```text Secret:It could be bunnies! ***stack smashing detected***: terminated Aboted (core dump).```
-* Analysis: An input string of this volume fills both the username and password buffers (10 bytes each) and continues writing sequentially up the stack until it overwrites the Stack Canary. The canary is a secret guard variable placed on the stack right above local variables. Just before the function returns, the compiler executes a hidden integrity check to evaluate the canary's memory address. If the check fails, the program bypasses the standard return path and jumps to the C standard library error handler, `__stack_chk_fail()`, forcing a controlled crash. 
+* **Analysis:** An input string of this volume fills both the username and password buffers (10 bytes each) and continues writing sequentially up the stack until it overwrites the Stack Canary. The canary is a secret guard variable placed on the stack right above local variables. Just before the function returns, the compiler executes a hidden integrity check to evaluate the canary's memory address. If the check fails, the program bypasses the standard return path and jumps to the C standard library error handler, `__stack_chk_fail()`, forcing a controlled crash. 
 
 ## Technical Appendix: Why Canaries Fail
 While Stack Canaries are a vital defensive layer, they represent an indirect tripwire rather than a physical barrier. Attackers circumvent this mitigation using two primary methodologies:
