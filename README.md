@@ -9,7 +9,7 @@ The application processes user credentials in a maximum expected buffer size of 
 
 ## Vulnerability Analysis & Code Mechanics
 
-The application applications implements two input tracking behaviors: `get_input_safe()` and `get_input_unsafe()`.
+The applications implement two input tracking behaviors: `get_input_safe()` and `get_input_unsafe()`.
 
 ### 1. Bounded Mitigation: `get_input_safe()` The safe input enforces strict boundary validation logic: 
 
